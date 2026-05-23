@@ -96,7 +96,7 @@ export function CalendarView() {
           </div>
           
           <Button 
-            variant="outline" 
+            variant="secondary" 
             size="sm" 
             className="text-xs h-8 gap-1.5"
             onClick={() => router.push("/dashboard/appointments")}
