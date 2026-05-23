@@ -17,12 +17,12 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "dark",
+  theme: "light",
   toggleTheme: () => {},
 });
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
     // Read from localStorage or system preference
@@ -31,11 +31,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       setTheme(stored);
       document.documentElement.classList.toggle("dark", stored === "dark");
     } else {
-      const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      setTheme(prefersDark ? "dark" : "light");
-      document.documentElement.classList.toggle("dark", prefersDark);
+      setTheme("light");
+      document.documentElement.classList.remove("dark");
     }
 
     // Listen for system theme changes
@@ -43,8 +40,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const handleChange = (e: MediaQueryListEvent) => {
       const stored = localStorage.getItem("theme");
       if (!stored) {
-        setTheme(e.matches ? "dark" : "light");
-        document.documentElement.classList.toggle("dark", e.matches);
+        setTheme("light"); // Keep light as strict default unless user manually changes
+        document.documentElement.classList.remove("dark");
       }
     };
     mediaQuery.addEventListener("change", handleChange);
